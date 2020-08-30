@@ -4,7 +4,7 @@
 		{ taskText: "build an app", done: false,  },
 		{ taskText: "world domination", done: false,  }
 	];
-	let task = task || "";
+	let task = "";
 
 	const handleSubmit = (text) => {
 		tasks = [...tasks, {taskText: text, done: false}];
