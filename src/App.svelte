@@ -5,7 +5,8 @@
 		{ taskText: "world domination", done: false,  }
 	];
 	let task = "";
-
+    const changes = 123;
+	const changes2 = 1213;
 	const handleSubmit = (text) => {
 		tasks = [...tasks, {taskText: text, done: false}];
 		task = "";
