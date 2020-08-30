@@ -1,34 +1,40 @@
 <script>
+	import Task from "./Task.svelte";
+	import AddTask from "./AddTask.svelte";
+
 	let tasks = [
 		{taskText: "Homework :)", done: false},
-		{ taskText: "build an app", done: false,  },
-		{ taskText: "world domination", done: false,  }
+		{taskText: "build an app", done: true,},
+		{taskText: "world domination", done: false,}
 	];
-	let task = "";
-
-	const handleSubmit = (text) => {
-		tasks = [...tasks, {taskText: text, done: false}];
-		task = "";
-		console.log(tasks)
-	}
-
-	const handleClear = () => {
-		tasks = tasks.filter(task => !task.done)
-	}
+	const deleteTask = e => tasks = [...tasks].filter((_, i) => i !== e.detail);
+	const findTask = index => tasks[index];
+	const doneTask = e => findTask(e.detail).done = !findTask(e.detail).done;
+	const createTask = taskText => ({taskText, done: false});
+	const addTask = e => tasks = [createTask(e.detail),...tasks];
+	const clearTasks = () => tasks = tasks.filter(task => !task.done);
 </script>
 
 <main>
+
 	<h1>Svelte ToDo</h1>
-	<input type="text" bind:value={task}>
+
+	<AddTask on:add={addTask}
+		     on:clear={clearTasks}
+	/>
+
+	<br/>
+
 	<div class="tasks">
-		{#each tasks as {taskText, done}, i}
-			<div>
-				{i + 1}. {taskText} <input type="checkbox" bind:checked={done}>
-			</div>
+		{#each tasks as task, index}
+			<Task   {...task}
+					index={index}
+					on:deleted={deleteTask}
+					on:done={doneTask}
+			/>
 		{/each}
 	</div>
-	<button on:click={handleSubmit(task)}>Add new</button>
-	<button on:click={handleClear}>Clear completed</button>
+
 </main>
 
 <style>
